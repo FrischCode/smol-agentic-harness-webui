@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S ╱─╲ H • Smol Agentic Harness WebUI</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="/assets/css/app.css">
+<link rel="stylesheet" href="/assets/css/prism.css">
+</head>
+<body>
+<div class="sahw-shell" id="shell">
+  <header class="sahw-navbar">
+    <span class="sahw-navbar__brand">S ╱─╲ H</span>
+    <span class="sahw-navbar__spacer"></span>
+    <div class="sahw-navbar__actions" id="header-badges"></div>
+  </header>
+  <div class="sahw-body">
+    <aside class="sahw-left" id="left">
+      <section class="sahw-pane" id="pane-tree" aria-label="Workspaces and runs">
+        <h2 class="sahw-pane__head" id="tree-head">
+          <span class="sahw-pane__title">Workspaces</span>
+          <button class="sahw-act" id="tree-spawn-go" type="button"
+                  title="Point the composer at this directory" aria-label="Point the composer at this directory">+</button>
+          <button class="sahw-act" id="tree-unfold" type="button"
+                  title="Unfold every workspace that holds a run" aria-label="Unfold all">▾</button>
+          <button class="sahw-act" id="tree-fold" type="button"
+                  title="Fold every workspace" aria-label="Fold all">▸</button>
+          <button class="sahw-act" id="tree-filter-toggle" type="button" aria-haspopup="dialog"
+                  aria-expanded="false" title="Filter the workspaces and runs the tree lists"
+                  aria-label="Filter the workspaces and runs the tree lists">⌕</button>
+          <div class="sahw-filter-pop" id="tree-filter-pop" hidden>
+            <input class="sahw-pane__filter" id="tree-filter" type="text" spellcheck="false"
+                   autocomplete="off" placeholder="filter the rows"
+                   aria-label="Filter the workspaces and runs the tree lists">
+          </div>
+          <button class="sahw-act" id="tree-menu" type="button" aria-haspopup="menu" aria-expanded="false"
+                  title="Archive or delete every run of every workspace"
+                  aria-label="Archive or delete every run of every workspace">⋮</button>
+          <span class="sahw-pane__note" id="tree-note" role="status" aria-live="polite"></span>
+        </h2>
+        <div class="sahw-pane__body">
+          <div class="sahw-list sahw-scroll-area" id="tree"></div>
+        </div>
+      </section>
+      <div class="sahw-split" id="split" role="separator" tabindex="0" aria-orientation="horizontal"
+           aria-label="Resize the two halves of the sidebar"></div>
+      <section class="sahw-pane" id="pane-browser" aria-label="Dir">
+        <h2 class="sahw-pane__head" id="browser-head">
+          <span class="sahw-pane__title">Dir</span>
+          <span class="sahw-pane__note" id="browser-note" role="status" aria-live="polite"></span>
+          <button class="sahw-act" id="spawn-go" type="button"
+                  title="Point the composer at this directory" aria-label="Point the composer at this directory">+</button>
+          <button class="sahw-act" id="open-terminal" type="button">❯</button>
+          <button class="sahw-act" id="open-explorer" type="button">⌂</button>
+          <button class="sahw-act" id="pane-mkdir" type="button">🗀</button>
+          <label class="sahw-act" id="pane-upload" for="browser-upload">⬆</label>
+          <button class="sahw-act" id="pane-refresh" type="button">↻</button>
+          <button class="sahw-act" id="browser-filter-toggle" type="button" aria-haspopup="dialog"
+                  aria-expanded="false" title="Filter this listing, or name a directory to list"
+                  aria-label="Filter this listing, or name a directory to list">⌕</button>
+          <div class="sahw-filter-pop" id="browser-filter-pop" hidden>
+            <input class="sahw-pane__filter" id="browser-filter" type="text" spellcheck="false"
+                   autocomplete="off" placeholder="filter, or a path to jump to"
+                   aria-label="Filter this listing, or name a directory to list">
+          </div>
+        </h2>
+        <div class="sahw-pane__body">
+          <input class="sahw-path" id="browser-path" type="text" spellcheck="false" autocomplete="off"
+                 placeholder="no directory selected" aria-label="Directory a new run starts in">
+          <input id="browser-upload" type="file" multiple hidden
+                 aria-label="Files to upload to this directory">
+          <div class="sahw-list sahw-scroll-area" id="browser"></div>
+        </div>
+      </section>
+    </aside>
+    <div class="sahw-edge" id="edge-left" role="separator" tabindex="0" aria-orientation="vertical"
+         aria-label="Resize the workspace column">
+      <button class="sahw-fold" id="fold-left" type="button"></button>
+    </div>
+    <main class="sahw-chat">
+      <div class="sahw-message-scroller sahw-scroller" id="scroller">
+        <div class="sahw-message-scroller__viewport">
+          <div class="sahw-message-scroller__content" id="messages"></div>
+        </div>
+        <button class="sahw-message-scroller__button" data-sahw-scroll-to="end" type="button"
+                title="Scroll to latest message" aria-label="Scroll to latest message">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+      </div>
+      <div class="sahw-composer">
+        <div class="sahw-attach-row">
+          <input class="sahw-attach__input" id="attach-input" type="file" multiple
+                 accept="image/png,image/jpeg,image/gif,image/bmp,image/webp,text/plain,text/markdown,text/x-python,text/csv,.txt,.md,.py,.js,.json,.toml,.yml,.yaml,.sh,.bat,.log,.csv,.html,.css,.xml,.ini"
+                 aria-label="Attach files to this word">
+          <div class="sahw-attachments" id="attach-tray" aria-label="Attached to this word"></div>
+        </div>
+        <div class="sahw-chat-composer" id="composer">
+          <div class="sahw-chat-composer__panel">
+            <textarea class="sahw-chat-composer__input sahw-scroll-area" id="composer-input" rows="2"
+                      aria-label="Message" placeholder="Describe a task for a new run"></textarea>
+            <div class="sahw-chat-composer__toolbar" id="composer-toolbar">
+              <label class="sahw-attach sahw-btn sahw-btn--ghost sahw-btn--sm" id="attach" for="attach-input"
+                     title="Attach files to this word" aria-label="Attach files to this word">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                     stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.82-2.83l8.49-8.48"/>
+                </svg>
+              </label>
+              <button class="sahw-slash sahw-btn sahw-btn--ghost sahw-btn--sm" id="slash" type="button"
+                      title="The run's own console — the operator's channel"
+                      aria-label="The run's own console" style="display: none">/</button>
+              <div class="sahw-chat-composer__choice" data-field="model">
+                <button class="sahw-chat-composer__choice-trigger" type="button"
+                        aria-haspopup="menu" aria-expanded="false">
+                  <span class="sahw-chat-composer__choice-label"></span>
+                </button>
+              </div>
+              <div class="sahw-chat-composer__choice sahw-effort" data-field="effort">
+                <button class="sahw-chat-composer__choice-trigger" type="button"
+                        aria-haspopup="menu" aria-expanded="false">
+                  <span class="sahw-chat-composer__choice-label">default</span>
+                </button>
+              </div>
+              <button class="sahw-thought" id="composer-thought" type="button"
+                      aria-pressed="true" title="toggle reasoning display"
+                      aria-label="toggle reasoning display">👁</button>
+              <div class="sahw-composer__acts" id="composer-acts">
+                <button class="sahw-chat-composer__send" id="composer-send" type="button"
+                        aria-label="Send message" title="Send message" disabled>➤ send</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </main>
+    <div class="sahw-edge" id="edge-right" role="separator" tabindex="0" aria-orientation="vertical"
+         aria-label="Resize the file column">
+      <button class="sahw-fold" id="fold-right" type="button"></button>
+    </div>
+    <aside class="sahw-right" id="preview" aria-label="File preview"></aside>
+  </div>
+</div>
+<script src="/assets/vendor/prism/prism.js"></script>
+<script src="/assets/vendor/prism/components/prism-python.js"></script>
+<script src="/assets/vendor/prism/components/prism-json.js"></script>
+<script src="/assets/vendor/prism/components/prism-json5.js"></script>
+<script src="/assets/vendor/prism/components/prism-bash.js"></script>
+<script src="/assets/vendor/prism/components/prism-rust.js"></script>
+<script src="/assets/vendor/prism/components/prism-c.js"></script>
+<script src="/assets/vendor/prism/components/prism-cpp.js"></script>
+<script src="/assets/vendor/prism/components/prism-csharp.js"></script>
+<script src="/assets/vendor/prism/components/prism-go.js"></script>
+<script src="/assets/vendor/prism/components/prism-java.js"></script>
+<script src="/assets/vendor/prism/components/prism-typescript.js"></script>
+<script src="/assets/vendor/prism/components/prism-sql.js"></script>
+<script src="/assets/vendor/prism/components/prism-graphql.js"></script>
+<script src="/assets/vendor/prism/components/prism-yaml.js"></script>
+<script src="/assets/vendor/prism/components/prism-toml.js"></script>
+<script src="/assets/vendor/prism/components/prism-properties.js"></script>
+<script src="/assets/vendor/prism/components/prism-ini.js"></script>
+<script src="/assets/vendor/prism/components/prism-hcl.js"></script>
+<script src="/assets/vendor/prism/components/prism-nginx.js"></script>
+<script src="/assets/vendor/prism/components/prism-editorconfig.js"></script>
+<script src="/assets/vendor/prism/components/prism-docker.js"></script>
+<script src="/assets/vendor/prism/components/prism-makefile.js"></script>
+<script src="/assets/vendor/prism/components/prism-shell-session.js"></script>
+<script src="/assets/vendor/prism/components/prism-powershell.js"></script>
+<script src="/assets/vendor/prism/components/prism-batch.js"></script>
+<script src="/assets/vendor/prism/components/prism-diff.js"></script>
+<script src="/assets/vendor/prism/components/prism-git.js"></script>
+<script src="/assets/vendor/prism/components/prism-markdown.js"></script>
+<script src="/assets/vendor/prism/components/prism-latex.js"></script>
+<script src="/assets/vendor/prism/components/prism-http.js"></script>
+<script src="/assets/vendor/prism/components/prism-log.js"></script>
+<script src="/assets/vendor/prism/components/prism-csv.js"></script>
+<script src="/assets/vendor/prism/components/prism-ruby.js"></script>
+<script src="/assets/vendor/prism/components/prism-lua.js"></script>
+<script type="module">import * as smd from '/assets/vendor/smd/smd.js'; window.smd = smd;</script>
+<script type="module" src="/assets/js/app.js"></script>
+</body>
+</html>

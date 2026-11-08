@@ -1,0 +1,48 @@
+/* The face the highlight wears: Prism writes the spans, and this sheet says what they owe — the
+   face's own tokens, so the highlight follows the theme the page stands in and never brings its
+   own ground. Prism's stock themes are refused the page: a colour that does not live in the theme
+   is a colour the theme cannot stand.
+
+   The map is a typesetting, not a palette. The grammar a word is written in stands in the theme's
+   own ink, and stands bold, because a theme that keeps no hue still keeps its ink: the grammar is
+   the weight the word stands in, whatever the theme stands in. The scaffolding the words rest on —
+   the marks between them, the mark a line invites — recedes into the theme's muted, and the comment
+   wears the muted's own italic. The values the words are about keep the theme's own hues, the ones
+   a theme keeps when it keeps any: the success that marks a word the machine set, the warning that
+   marks the number it counted, and the error where a word was given up. A theme that keeps no hue
+   is a theme the map still stands in — the ink and the muted carry the shape. */
+.token.keyword, .token.boolean, .token.rule, .token.atrule, .token.important, .token.selector,
+.token.directive, .token.property {
+  color: var(--sahw-color-text);
+  font-weight: 600;
+}
+.token.function, .token.builtin, .token.class-name, .token.decorator, .token.namespace,
+.token.type, .token.attr-name {
+  color: var(--sahw-clay);
+}
+.token.punctuation, .token.prolog, .token.doctype, .token.cdata, .token.operator {
+  color: var(--sahw-color-text-muted);
+}
+.token.comment {
+  color: var(--sahw-color-text-muted);
+  font-style: italic;
+}
+.token.string, .token.char, .token.attr-value, .token.insertion {
+  color: var(--sahw-color-success);
+}
+.token.number, .token.constant, .token.unit, .token.entity {
+  color: var(--sahw-color-warning);
+}
+.token.tag, .token.property-name, .token.variable, .token.symbol {
+  color: var(--sahw-color-accent-text);
+}
+.token.deleted {
+  color: var(--sahw-color-error);
+}
+
+/* The session a prompt line speaks: the marker a line wears stands in the punctuation's muted, the
+   words it invites stand in the python the fence named, and a line the session answers with is the
+   machine's own word — and the machine's word stands in the theme's muted. */
+.token.output {
+  color: var(--sahw-color-text-muted);
+}

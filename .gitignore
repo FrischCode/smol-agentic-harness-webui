@@ -1,0 +1,26 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.venv/
+scratch/*
+# the gate tooling stands in the versioned record, not in the throwaway: the pin set and the
+# batteries are the acceptance the work is verified against, and a change to one is a change the
+# record can diff and revert. The probes and logs beside them stay throwaway.
+!scratch/check_*.py
+!scratch/check_page.cjs
+!scratch/e2e_*.cjs
+!scratch/face_boot.cjs
+!scratch/face_files.cjs
+!scratch/run_battery.sh
+# the face's estate for the operator's files (attach.write_files): one home per workspace the runs stand
+# in, made on the request that needs it — machine state, never tree content
+.sahw/
+# the e2e's live-check runs (a fresh runs root per run; disposable, never tree content — SAH's own
+# gitignore keeps /runs/ the same way)
+runs/
+.pi/
+.coverage
+# machine config: a local .env would hold this box's endpoints; .env.example (the shape) stays
+# tracked — the pattern is SAH's
+.env
